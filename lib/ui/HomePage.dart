@@ -31,24 +31,25 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-          child: Row(children: <Widget>[
-        BlocBuilder(
-          bloc: _moviesBlock,
-          builder: (_, MoviesState state) {
-            if (state is MoviesEmpty) {
-              return Center(child: Text("Empty"));
-            }
-            if (state is MoviesLoading) {
-              return Center(child: Text("Loading"));
-            }
-            if (state is MoviesFetched) {
-              return Center(child: MoviesFetchedPage(movies: state.movies.results));
-            }
+        child: Column(children: <Widget>[
+          BlocBuilder(
+            bloc: _moviesBlock,
+            builder: (_, MoviesState state) {
+              if (state is MoviesEmpty) {
+                return Center(child: Text("Empty"));
+              }
+              if (state is MoviesLoading) {
+                return Center(child: Text("Loading"));
+              }
+              if (state is MoviesFetched) {
+                return MoviesFetchedPage(movies: state.movies.results);
+              }
 
-            return Center(child: Text("Error"));
-          },
-        ),
-      ])),
+              return Center(child: Text("Error"));
+            },
+          ),
+        ]),
+      ),
     );
   }
 }
@@ -60,6 +61,20 @@ class MoviesFetchedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(movies.first.title);
+    return SizedBox(
+      width: 300,
+      height: 400,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ListView.builder(
+          itemCount: movies.length,
+          itemBuilder: (_, int index) {
+            var movie = movies.elementAt(index);
+            return ListTile(
+                title: Text(movie.title), subtitle: Text(movie.overview));
+          },
+        ),
+      ),
+    );
   }
 }
