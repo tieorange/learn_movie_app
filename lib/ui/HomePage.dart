@@ -58,6 +58,8 @@ class MoviesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var textTheme = Theme.of(context).textTheme;
+
     return ListView.builder(
       itemCount: movies.length,
       itemBuilder: (_, int index) {
@@ -70,30 +72,37 @@ class MoviesList extends StatelessWidget {
                 BoxDecoration(border: new Border.all(color: Colors.blue)),
             child: Stack(
               children: <Widget>[
-                FadeInImage.assetNetwork(
-                  height: 70,
-                  image:
-                      "https://vignette.wikia.nocookie.net/marvelmovies/images/6/68/MIB_International_poster.jpg/revision/latest?cb=20190425170942",
-                  placeholder: "",
+                Column(
+                  children: <Widget>[movieItemImage()],
                 ),
-                Positioned(
-                    bottom: 0,
-                    child: ConstrainedBox(
-                      constraints:
-                          BoxConstraints.tightFor(width: 160, height: 20),
-                      child: Material(
-                        elevation: 4,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[],
-                        ),
-                      ),
-                    ))
+                movieItemContent(movie)
               ],
             ),
           ),
         );
       },
+    );
+  }
+
+  FadeInImage movieItemImage() {
+    return FadeInImage.assetNetwork(
+      height: 70,
+      image:
+          "https://vignette.wikia.nocookie.net/marvelmovies/images/6/68/MIB_International_poster.jpg/revision/latest?cb=20190425170942",
+      placeholder: "",
+    );
+  }
+
+  Widget movieItemContent(Movie movie) {
+    return Row(
+      children: <Widget>[
+        Material(
+          elevation: 4,
+          child: Row(
+            children: <Widget>[Text(movie.title + movie.title)],
+          ),
+        ),
+      ],
     );
   }
 }
