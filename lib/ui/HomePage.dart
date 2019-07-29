@@ -73,7 +73,7 @@ class MoviesList extends StatelessWidget {
             child: Stack(
               children: <Widget>[
                 Column(
-                  children: <Widget>[movieItemImage()],
+                  children: <Widget>[movieItemImage(movie)],
                 ),
                 movieItemContent(movie)
               ],
@@ -84,7 +84,7 @@ class MoviesList extends StatelessWidget {
     );
   }
 
-  FadeInImage movieItemImage() {
+  FadeInImage movieItemImage(Movie movie) {
     return FadeInImage.assetNetwork(
       height: 70,
       image:
@@ -94,15 +94,25 @@ class MoviesList extends StatelessWidget {
   }
 
   Widget movieItemContent(Movie movie) {
-    return Row(
-      children: <Widget>[
-        Material(
-          elevation: 4,
-          child: Row(
-            children: <Widget>[Text(movie.title + movie.title)],
-          ),
+    return Align(
+      alignment: Alignment.bottomRight,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: <Widget>[
+            Material(
+              elevation: 4,
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    child: Text(movie.title + movie.title),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
