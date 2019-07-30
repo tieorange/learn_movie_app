@@ -73,11 +73,9 @@ class MoviesList extends StatelessWidget {
             child: Stack(
               children: <Widget>[
                 Row(
-                  children: <Widget>[
-                    movieItemImage(movie),
-                    movieItemContent(movie)
-                  ],
+                  children: <Widget>[movieItemContent(movie)],
                 ),
+                movieItemImage(movie),
               ],
             ),
           ),
@@ -88,8 +86,7 @@ class MoviesList extends StatelessWidget {
 
   FadeInImage movieItemImage(Movie movie) {
     return FadeInImage.assetNetwork(
-      height: 70,
-      width: 50,
+      height: 100,
       image:
           "https://vignette.wikia.nocookie.net/marvelmovies/images/6/68/MIB_International_poster.jpg/revision/latest?cb=20190425170942",
       placeholder: "",
@@ -103,21 +100,40 @@ class MoviesList extends StatelessWidget {
         children: <Widget>[
           Material(
             elevation: 4,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Flexible(
-                    child: Container(
-                      child: Text(
-                        movie.title,
-                      ),
-                    ),
-                    fit: FlexFit.loose),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: 80, top: 16, bottom: 16, right: 16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(movie.title),
+                  movieRating(),
+                  movieTags()
+                ],
+              ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  Widget movieRating() {
+    return Row(
+      children: <Widget>[
+        Icon(
+          Icons.star,
+          color: Colors.orangeAccent,
+        ),
+        Text("8.5/10 IMDb  3h 10min"),
+      ],
+    );
+  }
+
+  movieTags() {
+    return Wrap(children: <Widget>[
+      Chip(label: Text("fantasy")),
+      Chip(label: Text("fantasy"))
+    ]);
   }
 }
