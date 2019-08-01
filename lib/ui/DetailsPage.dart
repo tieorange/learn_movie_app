@@ -29,22 +29,24 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: BlocBuilder(
-          bloc: _moviesBlock,
-          builder: (_, MoviesState state) {
-            if (state is MoviesEmpty) {
-              return Center(child: Text("Empty"));
-            }
-            if (state is MoviesLoading) {
-              return Center(child: Text("Loading"));
-            }
-            if (state is MoviesFetched) {
-              return MoviesList(movies: state.movies.results);
-            }
+      body: Container(
+        child: SafeArea(
+          child: BlocBuilder(
+            bloc: _moviesBlock,
+            builder: (_, MoviesState state) {
+              if (state is MoviesEmpty) {
+                return Center(child: Text("Empty"));
+              }
+              if (state is MoviesLoading) {
+                return Center(child: Text("Loading"));
+              }
+              if (state is MoviesFetched) {
+                return MoviesList(movies: state.movies.results);
+              }
 
-            return Center(child: Text("Error"));
-          },
+              return Center(child: Text("Error"));
+            },
+          ),
         ),
       ),
     );
@@ -59,7 +61,7 @@ class MoviesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
-
+    var screenWidth = MediaQuery.of(context).size.width;
     return ListView.builder(
       itemCount: movies.length,
       itemBuilder: (_, int index) {
@@ -75,7 +77,7 @@ class MoviesList extends StatelessWidget {
                 Row(
                   children: <Widget>[movieItemContent(movie)],
                 ),
-                movieItemImage(movie),
+                movieItemImage(movie, screenWidth),
               ],
             ),
           ),
@@ -84,7 +86,7 @@ class MoviesList extends StatelessWidget {
     );
   }
 
-  Widget movieItemImage(Movie movie) {
+  Widget movieItemImage(Movie movie, double screenWidth) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
       child: FadeInImage.assetNetwork(

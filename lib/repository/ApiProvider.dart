@@ -31,7 +31,7 @@ class ApiProvider {
       final genres = await fetchGenresList();
       final response =
           await http.get("$_baseUrl/movie/popular?api_key=$_apiKey");
-      print(response.body);
+      print("response: " + response.body);
       if (response.statusCode == 200) {
         return MovieResponseModel.fromJson(json.decode(response.body));
       } else {

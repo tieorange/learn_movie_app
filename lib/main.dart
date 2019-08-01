@@ -6,6 +6,14 @@ import 'package:learn_movie_app/ui/HomePage.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+
+  Widget buildItem() {
+    return Row(
+        children: <Widget>[
+          Material(elevation: 4)]
+    );
+  }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
