@@ -8,6 +8,7 @@ import 'package:learn_movie_app/blocks/movies/States.dart';
 import 'package:learn_movie_app/di/Injector.dart';
 import 'package:learn_movie_app/model/Movie.dart';
 import 'package:learn_movie_app/repository/MoviesRepository.dart';
+import 'package:learn_movie_app/ui/util/NavigationController.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -35,11 +36,9 @@ class _HomePageState extends State<HomePage> {
           builder: (_, MoviesState state) {
             if (state is MoviesEmpty) {
               return Center(child: Text("Empty"));
-            }
-            if (state is MoviesLoading) {
+            } else if (state is MoviesLoading) {
               return Center(child: Text("Loading"));
-            }
-            if (state is MoviesFetched) {
+            } else if (state is MoviesFetched) {
               return MoviesList(movies: state.movies.results);
             }
 
@@ -59,6 +58,7 @@ class MoviesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var textTheme = Theme.of(context).textTheme;
+    var screenWidth = MediaQuery.of(context).size.width;
 
     return ListView.builder(
       itemCount: movies.length,
@@ -68,14 +68,15 @@ class MoviesList extends StatelessWidget {
         return Container(
           padding: const EdgeInsets.all(20.0),
           child: DecoratedBox(
-            decoration:
-                BoxDecoration(border: new Border.all(color: Colors.blue)),
+            decoration: BoxDecoration(
+                border: new Border.all(color: Colors.white, width: 0.8)),
             child: Stack(
               children: <Widget>[
-                Row(
-                  children: <Widget>[movieItemContent(movie)],
-                ),
-                movieItemImage(movie),
+                movieItemContent(movie, screenWidth, context),
+                new MovieImage(
+                    movieImageHeight: movieImageHeight,
+                    movieImageWidth: movieImageWidth,
+                    movie: movie),
               ],
             ),
           ),
@@ -84,42 +85,49 @@ class MoviesList extends StatelessWidget {
     );
   }
 
-  Widget movieItemImage(Movie movie) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(16),
-      child: FadeInImage.assetNetwork(
-        fit: BoxFit.cover,
-        height: 100,
-        image:
-            "https://vignette.wikia.nocookie.net/marvelmovies/images/6/68/MIB_International_poster.jpg/revision/latest?cb=20190425170942",
-        placeholder: "",
-      ),
-    );
+  void onTapItem(BuildContext context, Movie movie) {
+    NavigationController.openDetails(movie, context);
   }
 
-  Widget movieItemContent(Movie movie) {
+  static const movieImageWidth = 90.0;
+  static const movieImageHeight = 130.0;
+
+  Widget movieItemContent(
+      Movie movie, double screenWidth, BuildContext context) {
+    var cardBorderRadius = BorderRadius.circular(16);
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: EdgeInsets.all(6),
       child: Row(
-        mainAxisSize: MainAxisSize.max,
         children: <Widget>[
-          Card(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            elevation: 4,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 30, top: 16, bottom: 16, right: 16),
-              child: Column(
-                children: <Widget>[
-                  Container(
-                      constraints: BoxConstraints.tightFor(width: 200),
-                      margin: EdgeInsets.only(left: 36),
-                      width: 200,
-                      child: Text(movie.title)),
-                  movieRating(),
-                  movieTags()
-                ],
+          Expanded(
+            child: Card(
+              shape: RoundedRectangleBorder(borderRadius: cardBorderRadius),
+              elevation: 4,
+              child: InkWell(
+                borderRadius: cardBorderRadius,
+                onTap: () {
+                  onTapItem(context, movie);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: movieImageWidth + 10,
+                      top: 16,
+                      bottom: 16,
+                      right: 16),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: 200),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        movieTitle(movie),
+                        SizedBox(height: 2),
+                        movieRating(),
+                        SizedBox(height: 8),
+                        movieTags()
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
@@ -128,8 +136,16 @@ class MoviesList extends StatelessWidget {
     );
   }
 
+  Widget movieTitle(Movie movie) {
+    return Text(
+      movie.title,
+      maxLines: 3,
+    );
+  }
+
   Widget movieRating() {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Icon(
           Icons.star,
@@ -140,10 +156,49 @@ class MoviesList extends StatelessWidget {
     );
   }
 
-  movieTags() {
-    return Wrap(children: <Widget>[
-      Chip(label: Text("fantasy")),
-      Chip(label: Text("fantasy"))
-    ]);
+  Widget movieTags() {
+    return Transform(
+      transform: Matrix4.identity()..scale(0.8),
+      child: Row(children: <Widget>[
+        Chip(label: Text("fantasy")),
+        SizedBox(width: 10),
+        Chip(label: Text("fantasy"))
+      ]),
+    );
+  }
+}
+
+class MovieImage extends StatelessWidget {
+  const MovieImage({
+    Key key,
+    @required this.movieImageHeight,
+    @required this.movieImageWidth,
+    @required this.movie,
+  }) : super(key: key);
+
+  final double movieImageHeight;
+  final double movieImageWidth;
+  final Movie movie;
+
+  @override
+  Widget build(BuildContext context) {
+    var movieLink =
+        "https://source.unsplash.com/random/700×900/?" + movie.title;
+    movie.backdropPath = movieLink;
+
+    return Hero(
+      transitionOnUserGestures: true,
+      tag: movie.title,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: FadeInImage.assetNetwork(
+          fit: BoxFit.cover,
+          height: movieImageHeight,
+          width: movieImageWidth,
+          image: movieLink,
+          placeholder: "",
+        ),
+      ),
+    );
   }
 }
