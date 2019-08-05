@@ -26,7 +26,10 @@ class _DetailsPageState extends State<DetailsPage> {
       body: SafeArea(
         child: Container(
           child: Column(
-            children: <Widget>[header(widget.movie)],
+            children: <Widget>[
+              header(widget.movie),
+              movieInfo(),
+            ],
           ),
         ),
       ),
@@ -34,24 +37,42 @@ class _DetailsPageState extends State<DetailsPage> {
   }
 
   Widget header(Movie movie) {
-    return Stack(children: <Widget>[
-      MovieImage(
-        movie: movie,
-        movieImageHeight: 200,
-        movieImageWidth: screenWidth,
-      ),
-      Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            movie.title,
-            style: textTheme.title.copyWith(color: Colors.white),
-          ),
-        ],
-      )
-    ]);
+    return Container(
+      margin: EdgeInsets.only(top: 16),
+      height: 200,
+      child: Stack(children: <Widget>[
+        MovieImage(
+          movie: movie,
+          movieImageWidth: screenWidth,
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              movie.title,
+              style: textTheme.title.copyWith(color: Colors.white),
+            ),
+            categoryChips()
+          ],
+        )
+      ]),
+    );
   }
 
-  movieInfo() {}
+  Row categoryChips() {
+    return Row(
+      children: <Widget>[
+        Chip(label: Text("adventure")),
+        Chip(label: Text("comedy")),
+      ],
+    );
+  }
+
+  Widget movieInfo() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(widget.movie.overview),
+    );
+  }
 }
