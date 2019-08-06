@@ -4,6 +4,7 @@ import 'package:learn_movie_app/model/Movie.dart';
 
 import 'HomePage.dart';
 
+// https://deploygate.com/settings = 9f6ddb4e8b50f7a790fd472f5412d706ba23b7ed
 class DetailsPage extends StatefulWidget {
   final Movie movie;
 
