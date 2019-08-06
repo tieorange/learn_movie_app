@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
               return MoviesList(movies: state.movies.results);
             }
 
-            return Center(child: Text("Error"));
+            return Center(child: Text(state.props.toString()));
           },
         ),
       ),
@@ -171,7 +171,7 @@ class MoviesList extends StatelessWidget {
 class MovieImage extends StatelessWidget {
   const MovieImage({
     Key key,
-    @required this.movieImageHeight,
+    this.movieImageHeight = 100,
     @required this.movieImageWidth,
     @required this.movie,
   }) : super(key: key);

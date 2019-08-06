@@ -39,7 +39,7 @@ class ApiProvider {
       }
     } catch (e) {
       print(e);
-      throw Exception('Something went wrong, please try again.');
+      throw Exception(e.toString() + ' ; Something went wrong, please try again.');
     }
   }
 }
