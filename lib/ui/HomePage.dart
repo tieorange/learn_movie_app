@@ -139,7 +139,7 @@ class MoviesList extends StatelessWidget {
   Widget movieTitle(Movie movie) {
     return Text(
       movie.title,
-      maxLines: 3,
+      maxLines: 2,
     );
   }
 
