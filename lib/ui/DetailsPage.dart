@@ -23,7 +23,10 @@ class _DetailsPageState extends State<DetailsPage> {
     textTheme = Theme.of(context).textTheme;
     screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        centerTitle: true,
+        title: FittedBox(fit: BoxFit.fitWidth, child: Text(widget.movie.title)),
+      ),
       body: SafeArea(
         child: Container(
           child: Column(
@@ -38,13 +41,16 @@ class _DetailsPageState extends State<DetailsPage> {
   }
 
   Widget header(Movie movie) {
+    var movieImageHeight = 200.0;
+
     return Container(
       margin: EdgeInsets.only(top: 16),
-      height: 200,
+      height: movieImageHeight,
       child: Stack(children: <Widget>[
         MovieImage(
           movie: movie,
           movieImageWidth: screenWidth,
+          movieImageHeight: movieImageHeight,
         ),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
