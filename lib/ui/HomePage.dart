@@ -195,7 +195,7 @@ class MovieImage extends StatelessWidget {
           fit: BoxFit.cover,
           height: movieImageHeight,
           width: movieImageWidth,
-          image: movie.posterUrl,
+          image: movie.posterPath,
           placeholder: "",
         ),
       ),
