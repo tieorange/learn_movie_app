@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:http/http.dart' as http;
 import 'package:learn_movie_app/model/Genre.dart';
 import 'package:learn_movie_app/model/Movie.dart';
 
@@ -29,9 +29,13 @@ class ApiProvider {
   Future<MovieResponseModel> fetchMovieList() async {
     try {
       final genres = await fetchGenresList();
-      final response =
-          await http.get("$_baseUrl/movie/popular?api_key=$_apiKey");
+      var url = "$_baseUrl/movie/popular?api_key=$_apiKey";
+
+      final response = await http.get(url);
+
+      print("request: " + url);
       print("response: " + response.body);
+
       if (response.statusCode == 200) {
         return MovieResponseModel.fromJson(json.decode(response.body));
       } else {
@@ -39,7 +43,8 @@ class ApiProvider {
       }
     } catch (e) {
       print(e);
-      throw Exception('Something went wrong, please try again.');
+      throw Exception(
+          e.toString() + ' ; Something went wrong, please try again.');
     }
   }
 }

@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
               return MoviesList(movies: state.movies.results);
             }
 
-            return Center(child: Text("Error"));
+            return Center(child: Text(state.props.toString()));
           },
         ),
       ),
@@ -72,7 +72,7 @@ class MoviesList extends StatelessWidget {
                 border: new Border.all(color: Colors.white, width: 0.8)),
             child: Stack(
               children: <Widget>[
-                movieItemContent(movie, screenWidth, context),
+                movieItemTextContent(movie, screenWidth, context),
                 new MovieImage(
                     movieImageHeight: movieImageHeight,
                     movieImageWidth: movieImageWidth,
@@ -92,7 +92,7 @@ class MoviesList extends StatelessWidget {
   static const movieImageWidth = 90.0;
   static const movieImageHeight = 130.0;
 
-  Widget movieItemContent(
+  Widget movieItemTextContent(
       Movie movie, double screenWidth, BuildContext context) {
     var cardBorderRadius = BorderRadius.circular(16);
     return Container(
@@ -169,21 +169,21 @@ class MoviesList extends StatelessWidget {
 }
 
 class MovieImage extends StatelessWidget {
-  const MovieImage({
-    Key key,
-    @required this.movieImageHeight,
-    @required this.movieImageWidth,
-    @required this.movie,
-  }) : super(key: key);
-
   final double movieImageHeight;
   final double movieImageWidth;
   final Movie movie;
 
+  const MovieImage({
+    Key key,
+    this.movieImageHeight = 100,
+    @required this.movieImageWidth,
+    @required this.movie,
+  }) : super(key: key);
+
+  final String movieLink = "https://source.unsplash.com/random/600×400";
+
   @override
   Widget build(BuildContext context) {
-    var movieLink =
-        "https://source.unsplash.com/random/700×900/?" + movie.title;
     movie.backdropPath = movieLink;
 
     return Hero(
@@ -195,7 +195,7 @@ class MovieImage extends StatelessWidget {
           fit: BoxFit.cover,
           height: movieImageHeight,
           width: movieImageWidth,
-          image: movieLink,
+          image: movie.posterUrl,
           placeholder: "",
         ),
       ),

@@ -23,7 +23,10 @@ class _DetailsPageState extends State<DetailsPage> {
     textTheme = Theme.of(context).textTheme;
     screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        centerTitle: true,
+        title: FittedBox(fit: BoxFit.fitWidth, child: Text(widget.movie.title)),
+      ),
       body: SafeArea(
         child: Container(
           child: Column(
@@ -38,26 +41,34 @@ class _DetailsPageState extends State<DetailsPage> {
   }
 
   Widget header(Movie movie) {
+    var movieImageHeight = 200.0;
+
     return Container(
       margin: EdgeInsets.only(top: 16),
-      height: 200,
+      height: movieImageHeight,
       child: Stack(children: <Widget>[
         MovieImage(
           movie: movie,
           movieImageWidth: screenWidth,
+          movieImageHeight: movieImageHeight,
         ),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Text(
-              movie.title,
-              style: textTheme.title.copyWith(color: Colors.white),
-            ),
+            title(movie),
+            releaseDate(movie, textTheme),
             categoryChips()
           ],
         )
       ]),
+    );
+  }
+
+  Text title(Movie movie) {
+    return Text(
+      movie.title,
+      style: textTheme.title.copyWith(color: Colors.white),
     );
   }
 
@@ -76,4 +87,11 @@ class _DetailsPageState extends State<DetailsPage> {
       child: Text(widget.movie.overview),
     );
   }
+}
+
+releaseDate(Movie movie, TextTheme textTheme) {
+  return Text(
+    movie.releaseDate.toString().substring(0, 4),
+    style: textTheme.subtitle.copyWith(color: Colors.white),
+  );
 }
