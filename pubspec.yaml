@@ -29,6 +29,7 @@ dependencies:
   async:
   redux_epics:
   rxdart:
+  kt_dart:
 
   equatable: ^0.2.0
 

@@ -9,8 +9,6 @@ class ApiProvider {
   final _apiKey = '2ffe2cefa3ecef9f33e2603f6f63936d';
   final _baseUrl = 'http://api.themoviedb.org/3';
 
-  List<dynamic> genres = <dynamic>[];
-
   Future<List<GenreModel>> fetchGenresList() async {
     try {
       final response =
@@ -28,7 +26,6 @@ class ApiProvider {
 
   Future<MovieResponseModel> fetchMovieList() async {
     try {
-      final genres = await fetchGenresList();
       var url = "$_baseUrl/movie/popular?api_key=$_apiKey";
 
       final response = await http.get(url);
