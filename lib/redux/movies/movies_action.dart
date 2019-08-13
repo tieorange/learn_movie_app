@@ -7,14 +7,16 @@ class FetchMoviesAction {
   FetchMoviesAction(this.sortBy);
 }
 
-class MoviesFetchSuccess {
+class MoviesFetchSuccessAction {
   final KtList<Movie> movies;
 
-  MoviesFetchSuccess(this.movies);
+  MoviesFetchSuccessAction(this.movies);
 }
 
-class MoviesFetchError {
+class MoviesFetchErrorAction {
   final String error;
 
-  MoviesFetchError(this.error);
+  MoviesFetchErrorAction(this.error);
 }
+
+class MoviesFetchCancelAction{}

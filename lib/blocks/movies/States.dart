@@ -1,18 +1,18 @@
 import 'package:equatable/equatable.dart';
 import 'package:learn_movie_app/model/Movie.dart';
 
-abstract class MoviesState extends Equatable {
-  MoviesState([List props = const []]) : super(props);
+abstract class MoviesStateBloc extends Equatable {
+  MoviesStateBloc([List props = const []]) : super(props);
 }
 
-class MoviesEmpty extends MoviesState {}
+class MoviesEmpty extends MoviesStateBloc {}
 
-class MoviesLoading extends MoviesState {}
+class MoviesLoading extends MoviesStateBloc {}
 
-class MoviesFetched extends MoviesState {
+class MoviesFetched extends MoviesStateBloc {
   final MovieResponseModel movies;
 
   MoviesFetched(this.movies);
 }
 
-class MoviesError extends MoviesState {}
+class MoviesError extends MoviesStateBloc {}

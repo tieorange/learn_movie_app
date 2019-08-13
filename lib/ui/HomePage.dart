@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: BlocBuilder(
           bloc: _moviesBlock,
-          builder: (_, MoviesState state) {
+          builder: (_, MoviesStateBloc state) {
             if (state is MoviesEmpty) {
               return Center(child: Text("Empty"));
             } else if (state is MoviesLoading) {

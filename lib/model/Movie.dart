@@ -4,6 +4,9 @@
 
 import 'dart:convert';
 
+import 'package:kt_dart/collection.dart';
+import 'package:kt_dart/src/collection/kt_list.dart';
+
 final String posterPathBaseUrl = "https://image.tmdb.org/t/p/w500/";
 
 MovieResponseModel welcomeFromJson(String str) =>
@@ -24,6 +27,8 @@ class MovieResponseModel {
     this.results,
   });
 
+  KtList<Movie> map() => new KtList.from(this.results);
+
   factory MovieResponseModel.fromJson(Map<String, dynamic> json) =>
       new MovieResponseModel(
         page: json["page"],
@@ -39,6 +44,7 @@ class MovieResponseModel {
         "total_pages": totalPages,
         "results": new List<dynamic>.from(results.map((x) => x.toJson())),
       };
+
 }
 
 class Movie {
